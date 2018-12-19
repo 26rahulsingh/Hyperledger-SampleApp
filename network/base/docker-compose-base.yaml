@@ -20,10 +20,10 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-    - ../crypto-config/ordererOrganizations/jet-network.com/orderers/orderer.jet-network.com/msp:/var/hyperledger/orderer/msp
-    - ../crypto-config/ordererOrganizations/jet-network.com/orderers/orderer.jet-network.com/tls/:/var/hyperledger/orderer/tls
-    - orderer.jet-network.com:/var/hyperledger/production/orderer
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/ordererOrganizations/jet-network.com/orderers/orderer.jet-network.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/ordererOrganizations/jet-network.com/orderers/orderer.jet-network.com/tls/:/var/hyperledger/orderer/tls
+      - orderer.jet-network.com:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
 
@@ -39,10 +39,10 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.100mb.jet-network.com:7051
       - CORE_PEER_LOCALMSPID=100MBMSP
     volumes:
-        - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.100mb.jet-network.com:/var/hyperledger/production
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/msp:/etc/hyperledger/fabric/msp
+      - ../crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.100mb.jet-network.com:/var/hyperledger/production
     ports:
       - 7051:7051
       - 7053:7053
@@ -59,11 +59,10 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.100mb.jet-network.com:7051
       - CORE_PEER_LOCALMSPID=100MBMSP
     volumes:
-        - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer1.100mb.jet-network.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer1.100mb.jet-network.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.100mb.jet-network.com:/var/hyperledger/production
-
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer1.100mb.jet-network.com/msp:/etc/hyperledger/fabric/msp
+      - ../crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer1.100mb.jet-network.com/tls:/etc/hyperledger/fabric/tls
+      - peer1.100mb.jet-network.com:/var/hyperledger/production
     ports:
       - 8051:7051
       - 8053:7053
@@ -80,10 +79,10 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.thinkright.jet-network.com:7051
       - CORE_PEER_LOCALMSPID=ThinkRightMSP
     volumes:
-        - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/thinkright.jet-network.com/peers/peer0.thinkright.jet-network.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/thinkright.jet-network.com/peers/peer0.thinkright.jet-network.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.thinkright.jet-network.com:/var/hyperledger/production
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/thinkright.jet-network.com/peers/peer0.thinkright.jet-network.com/msp:/etc/hyperledger/fabric/msp
+      - ../crypto-config/peerOrganizations/thinkright.jet-network.com/peers/peer0.thinkright.jet-network.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.thinkright.jet-network.com:/var/hyperledger/production
     ports:
       - 9051:7051
       - 9053:7053
@@ -100,10 +99,11 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.thinkright.jet-network.com:7051
       - CORE_PEER_LOCALMSPID=ThinkRightMSP
     volumes:
-        - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/thinkright.jet-network.com/peers/peer1.thinkright.jet-network.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/thinkright.jet-network.com/peers/peer1.thinkright.jet-network.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.thinkright.jet-network.com:/var/hyperledger/production
+      - /var/run/:/host/var/run/
+      - ../crypto-config/peerOrganizations/thinkright.jet-network.com/peers/peer1.thinkright.jet-network.com/msp:/etc/hyperledger/fabric/msp
+      - ../crypto-config/peerOrganizations/thinkright.jet-network.com/peers/peer1.thinkright.jet-network.com/tls:/etc/hyperledger/fabric/tls
+      - peer1.thinkright.jet-network.com:/var/hyperledger/production
     ports:
       - 10051:7051
       - 10053:7053
+
