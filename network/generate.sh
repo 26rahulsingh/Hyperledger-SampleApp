@@ -13,8 +13,8 @@ if [ "$?" -ne 0 ]; then
   exit 1
 fi
 
-# The next steps will replace the template's contents with the
-# actual values of the private key file names for the two CAs.
+# sed on MacOSX does not support -i flag with a null extension. We will use
+# 't' for our back-up's extension and delete it at the end of the function
 ARCH=$(uname -s | grep Darwin)
 if [ "$ARCH" == "Darwin" ]; then
   OPTS="-it"
@@ -22,6 +22,8 @@ else
   OPTS="-i"
 fi
 
+# The next steps will replace the template's contents with the
+# actual values of the private key file names for the two CAs.
 CURRENT_DIR=$PWD
 cd crypto-config/peerOrganizations/100mb.jet-network.com/ca/
 PRIV_KEY=$(ls *_sk)
@@ -39,7 +41,7 @@ echo "#########  Generating Orderer Genesis block ##############"
 echo "##########################################################"
 # Note: For some unknown reason (at least for now) the block file can't be
 # named orderer.genesis.block or the orderer will fail to launch!
-configtxgen -profile OrdererGenesis -channelID jet-sys-channel -outputBlock ./channel-artifacts/genesis.block
+configtxgen -profile OrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate orderer genesis block..."
   exit 1
