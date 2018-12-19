@@ -1,0 +1,23 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: jet-network.com
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: 100MB
+    Domain: 100mb.jet-network.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: ThinkRight
+    Domain: thinkright.jet-network.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+

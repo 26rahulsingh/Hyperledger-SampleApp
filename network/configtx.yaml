@@ -1,0 +1,147 @@
+Organizations:
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/jet-network.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
+
+    - &100MB
+        Name: 100MBMSP
+        ID: 100MBMSP
+        MSPDir: crypto-config/peerOrganizations/100mb.jet-network.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('100MBMSP.admin', '100MBMSP.peer', '100MBMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('100MBMSP.admin', '100MBMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('100MBMSP.admin')"
+
+        AnchorPeers:
+            - Host: peer0.100mb.jet-network.com
+              Port: 7051
+
+    - &ThinkRight
+        Name: ThinkRight
+        ID: ThinkRight
+        MSPDir: crypto-config/peerOrganizations/thinkright.jet-network.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('ThinkRight.admin', 'ThinkRight.peer', 'ThinkRight.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('ThinkRight.admin', 'ThinkRight.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('ThinkRight.admin')"
+
+        AnchorPeers:
+            - Host: peer0.thinkright.jet-network.com
+              Port: 7051
+
+Capabilities:
+    Channel: &ChannelCapabilities
+        V1_3: true
+
+    Orderer: &OrdererCapabilities
+        V1_1: true
+
+    Application: &ApplicationCapabilities
+        V1_3: true
+        V1_2: false
+        V1_1: false
+
+Application: &ApplicationDefaults
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+Orderer: &OrdererDefaults
+    OrdererType: solo
+    Addresses:
+        - orderer.jet-network.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    Capabilities:
+        <<: *ChannelCapabilities
+
+Profiles:
+
+    TwoOrgsOrdererGenesis:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *100MB
+                    - *ThinkRight
+    TwoOrgsChannel:
+        Consortium: JetConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *100MB
+                - *ThinkRight
+            Capabilities:
+                <<: *ApplicationCapabilities
