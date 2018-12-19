@@ -17,7 +17,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # now run the end to end script
-docker exec cli scripts/script.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
+# docker exec cli scripts/script.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
+docker exec cli scripts/script.sh "mychannel" "3" "node" "10" "true"
 if [ $? -ne 0 ]; then
     echo "ERROR !!!! Test failed"
     exit 1

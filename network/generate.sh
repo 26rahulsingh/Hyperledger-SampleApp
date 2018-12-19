@@ -5,6 +5,7 @@ CHANNEL_NAME=mychannel
 
 # remove previous crypto material and config transactions
 rm -fr crypto-config/*
+rm -fr channel-artifacts/*
 
 # generate crypto material
 cryptogen generate --config=./crypto-config.yaml
