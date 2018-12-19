@@ -1,5 +1,5 @@
 #!/bin/sh
-export PATH=/home/rahul/work/hyperledger/fabric-samples/bin:${PWD}/../bin:${PWD}:$PATH
+export PATH=./bin:${PWD}/../bin:${PWD}:$PATH
 export FABRIC_CFG_PATH=${PWD}
 CHANNEL_NAME=mychannel
 
@@ -13,7 +13,8 @@ if [ "$?" -ne 0 ]; then
   exit 1
 fi
 
-# replace private key file names for the two CAs.
+# The next steps will replace the template's contents with the
+# actual values of the private key file names for the two CAs.
 ARCH=$(uname -s | grep Darwin)
 if [ "$ARCH" == "Darwin" ]; then
   OPTS="-it"
@@ -25,36 +26,52 @@ CURRENT_DIR=$PWD
 cd crypto-config/peerOrganizations/100mb.jet-network.com/ca/
 PRIV_KEY=$(ls *_sk)
 cd "$CURRENT_DIR"
-sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
-  cd crypto-config/peerOrganizations/org2.example.com/ca/
-  PRIV_KEY=$(ls *_sk)
-  cd "$CURRENT_DIR"
+sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-cli.yaml
+cd crypto-config/peerOrganizations/thinkright.jet-network.com/ca/
+PRIV_KEY=$(ls *_sk)
+cd "$CURRENT_DIR"
+sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-cli.yaml
 
-
-# generate genesis block for orderer
-configtxgen -profile OrdererGenesis -outputBlock ./channel-artifacts/genesis.block
+# Generate orderer genesis block, channel configuration transaction and
+# anchor peer update transactions
+echo "##########################################################"
+echo "#########  Generating Orderer Genesis block ##############"
+echo "##########################################################"
+# Note: For some unknown reason (at least for now) the block file can't be
+# named orderer.genesis.block or the orderer will fail to launch!
+configtxgen -profile OrdererGenesis -channelID jet-sys-channel -outputBlock ./channel-artifacts/genesis.block
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate orderer genesis block..."
   exit 1
 fi
 
-# generate channel configuration transaction
+echo
+echo "#################################################################"
+echo "### Generating channel configuration transaction 'channel.tx' ###"
+echo "#################################################################"
 configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate channel configuration transaction..."
   exit 1
 fi
 
-# generate anchor peer transaction for 100MB
+echo
+echo "#################################################################"
+echo "#######    Generating anchor peer update for 100MBMSP   #########"
+echo "#################################################################"
 configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/100MBMSPanchors.tx -channelID $CHANNEL_NAME -asOrg 100MBMSP
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate anchor peer update for 100MBMSP..."
   exit 1
 fi
 
-# generate anchor peer transaction for ThinkRight
+echo
+echo "#################################################################"
+echo "#######    Generating anchor peer update for ThinkRightMSP   ####"
+echo "#################################################################"
 configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/ThinkRightMSPanchors.tx -channelID $CHANNEL_NAME -asOrg ThinkRightMSP
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate anchor peer update for ThinkRightMSP..."
   exit 1
 fi
+
