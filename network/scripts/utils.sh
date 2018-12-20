@@ -1,8 +1,7 @@
 # This is a collection of bash functions used by different scripts
-
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/jet-network.com/orderers/orderer.jet-network.com/msp/tlscacerts/tlsca.jet-network.com-cert.pem
-PEER0_ORG1_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/tls/ca.crt
-PEER0_ORG2_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/thinkright.jet-network.com/peers/peer0.thinkright.jet-network.com/tls/ca.crt
+PEER0_100MB_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/tls/ca.crt
+PEER0_THINKRIGHT_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/thinkright.jet-network.com/peers/peer0.thinkright.jet-network.com/tls/ca.crt
 
 # verify the result of the end-to-end test
 verifyResult() {
@@ -26,7 +25,7 @@ setGlobals() {
   ORG=$2
   if [ $ORG -eq 1 ]; then
     CORE_PEER_LOCALMSPID="100MBMSP"
-    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_100MB_CA
     CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/100mb.jet-network.com/users/Admin@100mb.jet-network.com/msp
     if [ $PEER -eq 0 ]; then
       CORE_PEER_ADDRESS=peer0.100mb.jet-network.com:7051
@@ -35,7 +34,7 @@ setGlobals() {
     fi
   elif [ $ORG -eq 2 ]; then
     CORE_PEER_LOCALMSPID="ThinkRightMSP"
-    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_THINKRIGHT_CA
     CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/thinkright.jet-network.com/users/Admin@thinkright.jet-network.com/msp
     if [ $PEER -eq 0 ]; then
       CORE_PEER_ADDRESS=peer0.thinkright.jet-network.com:7051

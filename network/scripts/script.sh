@@ -41,15 +41,15 @@ createChannel() {
 	setGlobals 0 1
 
 	if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
-                set -x
+        set -x
 		peer channel create -o orderer.jet-network.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx >&log.txt
 		res=$?
-                set +x
+        set +x
 	else
-				set -x
+		set -x
 		peer channel create -o orderer.jet-network.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA >&log.txt
 		res=$?
-				set +x
+		set +x
 	fi
 	cat log.txt
 	verifyResult $res "Channel creation failed"
@@ -61,7 +61,11 @@ joinChannel () {
 	for org in 1 2; do
 	    for peer in 0 1; do
 		joinChannelWithRetry $peer $org
-		echo "===================== peer${peer}.org${org} joined channel '$CHANNEL_NAME' ===================== "
+		if [ $org -eq 1 ]; then
+			echo "===================== peer${peer}.100mb joined channel '$CHANNEL_NAME' ===================== "
+		else
+			echo "===================== peer${peer}.thinkright joined channel '$CHANNEL_NAME' ===================== "
+		fi
 		sleep $DELAY
 		echo
 	    done
@@ -77,35 +81,35 @@ echo "Having all peers join the channel..."
 joinChannel
 
 ## Set the anchor peers for each org in the channel
-echo "Updating anchor peers for org1..."
+echo "Updating anchor peers for 100MB..."
 updateAnchorPeers 0 1
-echo "Updating anchor peers for org2..."
+echo "Updating anchor peers for ThinkRight..."
 updateAnchorPeers 0 2
 
-## Install chaincode on peer0.org1 and peer0.org2
-echo "Installing chaincode on peer0.org1..."
+## Install chaincode on peer0.100mb and peer0.thinkright
+echo "Installing chaincode on peer0.100mb..."
 installChaincode 0 1
-echo "Install chaincode on peer0.org2..."
+echo "Install chaincode on peer0.thinkright..."
 installChaincode 0 2
 
-# Instantiate chaincode on peer0.org2
-echo "Instantiating chaincode on peer0.org2..."
+# Instantiate chaincode on peer0.thinkright
+echo "Instantiating chaincode on peer0.thinkright..."
 instantiateChaincode 0 2
 
-# Query chaincode on peer0.org1
-echo "Querying chaincode on peer0.org1..."
+# Query chaincode on peer0.100mb
+echo "Querying chaincode on peer0.100mb..."
 chaincodeQuery 0 1 100
 
-# Invoke chaincode on peer0.org1 and peer0.org2
-echo "Sending invoke transaction on peer0.org1 peer0.org2..."
+# Invoke chaincode on peer0.100mb and peer0.thinkright
+echo "Sending invoke transaction on peer0.100mb peer0.thinkright..."
 chaincodeInvoke 0 1 0 2
 
-## Install chaincode on peer1.org2
-echo "Installing chaincode on peer1.org2..."
+## Install chaincode on peer1.thinkright
+echo "Installing chaincode on peer1.thinkright..."
 installChaincode 1 2
 
-# Query on chaincode on peer1.org2, check if the result is 90
-echo "Querying chaincode on peer1.org2..."
+# Query on chaincode on peer1.thinkright, check if the result is 90
+echo "Querying chaincode on peer1.thinkright..."
 chaincodeQuery 1 2 90
 
 echo
