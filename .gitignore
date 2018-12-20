@@ -1,4 +1,19 @@
-network/crypto-config
+# Emacs backup files
+*~
+*#
+.#*
+# Vim file artifacts
+.*.sw*
+# installed platform-specific binaries
+.DS_Store
+.project
+
+network/channel-artifacts/*.tx
+network/channel-artifacts/*.block
+network/crypto-config/*
+
+# node modules
+chaincode/node_modules/
 
 # Logs
 logs

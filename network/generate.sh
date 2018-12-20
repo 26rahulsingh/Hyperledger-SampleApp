@@ -4,24 +4,39 @@ export FABRIC_CFG_PATH=${PWD}
 CHANNEL_NAME=mychannel
 
 # remove previous crypto material and config transactions
-rm -fr crypto-config/*
-rm -fr channel-artifacts/*
+rm -Rf crypto-config/*
+rm -Rf channel-artifacts/*
 
-# generate crypto material
-cryptogen generate --config=./crypto-config.yaml
 if [ "$?" -ne 0 ]; then
-  echo "Failed to generate crypto material..."
+  echo "cryptogen tool not found. exiting"
   exit 1
 fi
+echo
+echo "##########################################################"
+echo "##### Generate certificates using cryptogen tool #########"
+echo "##########################################################"
+
+set -x
+cryptogen generate --config=./crypto-config.yaml
+res=$?
+set +x
+if [ $res -ne 0 ]; then
+  echo "Failed to generate certificates..."
+  exit 1
+fi
+echo
 
 # sed on MacOSX does not support -i flag with a null extension. We will use
 # 't' for our back-up's extension and delete it at the end of the function
 ARCH=$(uname -s | grep Darwin)
-if [ "$ARCH" == "Darwin" ]; then
+if [ "$ARCH" = "Darwin" ]; then
   OPTS="-it"
 else
   OPTS="-i"
 fi
+
+# Copy the template to the file that will be modified to add the private key
+cp docker-compose-cli-template.yaml docker-compose-cli.yaml
 
 # The next steps will replace the template's contents with the
 # actual values of the private key file names for the two CAs.
