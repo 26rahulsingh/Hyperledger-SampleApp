@@ -8,6 +8,7 @@
 .DS_Store
 .project
 
+network/docker-compose-cli.yaml
 network/channel-artifacts/*.tx
 network/channel-artifacts/*.block
 network/crypto-config/*
