@@ -1,8 +1,0 @@
-NodeOUs:
-  Enable: true
-  ClientOUIdentifier:
-    Certificate: cacerts/ca.100mb.jet-network.com-cert.pem
-    OrganizationalUnitIdentifier: client
-  PeerOUIdentifier:
-    Certificate: cacerts/ca.100mb.jet-network.com-cert.pem
-    OrganizationalUnitIdentifier: peer

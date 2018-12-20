@@ -3,31 +3,31 @@ Organizations:
         Name: OrdererOrg
         ID: OrdererMSP
         MSPDir: crypto-config/ordererOrganizations/jet-network.com/msp
-        # Policies:
-        #     Readers:
-        #         Type: Signature
-        #         Rule: "OR('OrdererMSP.member')"
-        #     Writers:
-        #         Type: Signature
-        #         Rule: "OR('OrdererMSP.member')"
-        #     Admins:
-        #         Type: Signature
-        #         Rule: "OR('OrdererMSP.admin')"
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
 
     - &100MB
         Name: 100MBMSP
         ID: 100MBMSP
         MSPDir: crypto-config/peerOrganizations/100mb.jet-network.com/msp
-        # Policies:
-        #     Readers:
-        #         Type: Signature
-        #         Rule: "OR('100MBMSP.admin', '100MBMSP.peer', '100MBMSP.client')"
-        #     Writers:
-        #         Type: Signature
-        #         Rule: "OR('100MBMSP.admin', '100MBMSP.client')"
-        #     Admins:
-        #         Type: Signature
-        #         Rule: "OR('100MBMSP.admin')"
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('100MBMSP.admin', '100MBMSP.peer', '100MBMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('100MBMSP.admin', '100MBMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('100MBMSP.admin')"
 
         AnchorPeers:
             - Host: peer0.100mb.jet-network.com
@@ -37,16 +37,16 @@ Organizations:
         Name: ThinkRightMSP
         ID: ThinkRightMSP
         MSPDir: crypto-config/peerOrganizations/thinkright.jet-network.com/msp
-        # Policies:
-        #     Readers:
-        #         Type: Signature
-        #         Rule: "OR('ThinkRightMSP.admin', 'ThinkRightMSP.peer', 'ThinkRightMSP.client')"
-        #     Writers:
-        #         Type: Signature
-        #         Rule: "OR('ThinkRightMSP.admin', 'ThinkRightMSP.client')"
-        #     Admins:
-        #         Type: Signature
-        #         Rule: "OR('ThinkRightMSP.admin')"
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('ThinkRightMSP.admin', 'ThinkRightMSP.peer', 'ThinkRightMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('ThinkRightMSP.admin', 'ThinkRightMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('ThinkRightMSP.admin')"
 
         AnchorPeers:
             - Host: peer0.thinkright.jet-network.com
@@ -66,16 +66,16 @@ Capabilities:
 
 Application: &ApplicationDefaults
     Organizations:
-    # Policies:
-    #     Readers:
-    #         Type: ImplicitMeta
-    #         Rule: "ANY Readers"
-    #     Writers:
-    #         Type: ImplicitMeta
-    #         Rule: "ANY Writers"
-    #     Admins:
-    #         Type: ImplicitMeta
-    #         Rule: "MAJORITY Admins"
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
 
 Orderer: &OrdererDefaults
     OrdererType: solo
@@ -92,31 +92,31 @@ Orderer: &OrdererDefaults
             - 127.0.0.1:9092
 
     Organizations:
-    # Policies:
-    #     Readers:
-    #         Type: ImplicitMeta
-    #         Rule: "ANY Readers"
-    #     Writers:
-    #         Type: ImplicitMeta
-    #         Rule: "ANY Writers"
-    #     Admins:
-    #         Type: ImplicitMeta
-    #         Rule: "MAJORITY Admins"
-    #     BlockValidation:
-    #         Type: ImplicitMeta
-    #         Rule: "ANY Writers"
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
 
 Channel: &ChannelDefaults
-    # Policies:
-    #     Readers:
-    #         Type: ImplicitMeta
-    #         Rule: "ANY Readers"
-    #     Writers:
-    #         Type: ImplicitMeta
-    #         Rule: "ANY Writers"
-    #     Admins:
-    #         Type: ImplicitMeta
-    #         Rule: "MAJORITY Admins"
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
 
     Capabilities:
         <<: *ChannelCapabilities
