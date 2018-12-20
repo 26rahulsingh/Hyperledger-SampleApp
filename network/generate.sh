@@ -49,6 +49,11 @@ cd crypto-config/peerOrganizations/thinkright.jet-network.com/ca/
 PRIV_KEY=$(ls *_sk)
 cd "$CURRENT_DIR"
 sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-cli.yaml
+# If MacOSX, remove the temporary backup of the docker-compose file
+if [ "$ARCH" = "Darwin" ]; then
+  rm docker-compose-cli.yamlt
+fi
+
 
 # Generate orderer genesis block, channel configuration transaction and
 # anchor peer update transactions
@@ -57,8 +62,11 @@ echo "#########  Generating Orderer Genesis block ##############"
 echo "##########################################################"
 # Note: For some unknown reason (at least for now) the block file can't be
 # named orderer.genesis.block or the orderer will fail to launch!
+set -x
 configtxgen -profile OrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
-if [ "$?" -ne 0 ]; then
+res=$?
+set +x
+if [ $res -ne 0 ]; then
   echo "Failed to generate orderer genesis block..."
   exit 1
 fi
@@ -67,8 +75,11 @@ echo
 echo "#################################################################"
 echo "### Generating channel configuration transaction 'channel.tx' ###"
 echo "#################################################################"
+set -x
 configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
-if [ "$?" -ne 0 ]; then
+res=$?
+set +x
+if [ $res -ne 0 ]; then
   echo "Failed to generate channel configuration transaction..."
   exit 1
 fi
@@ -77,8 +88,11 @@ echo
 echo "#################################################################"
 echo "#######    Generating anchor peer update for 100MBMSP   #########"
 echo "#################################################################"
+set -x
 configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/100MBMSPanchors.tx -channelID $CHANNEL_NAME -asOrg 100MBMSP
-if [ "$?" -ne 0 ]; then
+res=$?
+set +x
+if [ $res -ne 0 ]; then
   echo "Failed to generate anchor peer update for 100MBMSP..."
   exit 1
 fi
@@ -87,9 +101,13 @@ echo
 echo "#################################################################"
 echo "#######    Generating anchor peer update for ThinkRightMSP   ####"
 echo "#################################################################"
+set -x
 configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/ThinkRightMSPanchors.tx -channelID $CHANNEL_NAME -asOrg ThinkRightMSP
-if [ "$?" -ne 0 ]; then
+res=$?
+set +x
+if [ $res -ne 0 ]; then
   echo "Failed to generate anchor peer update for ThinkRightMSP..."
   exit 1
 fi
+echo
 
