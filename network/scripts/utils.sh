@@ -105,8 +105,13 @@ installChaincode() {
   res=$?
   set +x
   cat log.txt
+
   verifyResult $res "Chaincode installation on peer${PEER}.org${ORG} has failed"
-  echo "===================== Chaincode is installed on peer${PEER}.org${ORG} ===================== "
+  if [ $ORG -eq 1 ]; then
+    echo "===================== Chaincode is installed on peer${PEER}.100mb ========================== "
+  else
+    echo "===================== Chaincode is installed on peer${PEER}.thinkright ===================== "
+  fi
   echo
 }
 
@@ -132,7 +137,11 @@ instantiateChaincode() {
   fi
   cat log.txt
   verifyResult $res "Chaincode instantiation on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' failed"
-  echo "===================== Chaincode is instantiated on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
+  if [ $ORG -eq 1 ]; then
+    echo "===================== Chaincode is instantiated on peer${PEER}.100mb on channel '$CHANNEL_NAME' ===================== "
+  else
+    echo "===================== Chaincode is instantiated on peer${PEER}.thinkright on channel '$CHANNEL_NAME' ===================== "
+  fi
   echo
 }
 
@@ -156,7 +165,11 @@ chaincodeQuery() {
   ORG=$2
   setGlobals $PEER $ORG
   EXPECTED_RESULT=$3
-  echo "===================== Querying on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME'... ===================== "
+  if [ $ORG -eq 1 ]; then
+    echo "===================== Querying on peer${PEER}.100mb on channel '$CHANNEL_NAME'... ===================== "
+  else
+    echo "===================== Querying on peer${PEER}.thinkright on channel '$CHANNEL_NAME'... ===================== "
+  fi
   local rc=1
   local starttime=$(date +%s)
 
@@ -166,7 +179,11 @@ chaincodeQuery() {
     test "$(($(date +%s) - starttime))" -lt "$TIMEOUT" -a $rc -ne 0
   do
     sleep $DELAY
-    echo "Attempting to Query peer${PEER}.org${ORG} ...$(($(date +%s) - starttime)) secs"
+    if [ $ORG -eq 1 ]; then
+      echo "Attempting to Query peer${PEER}.100mb ...$(($(date +%s) - starttime)) secs"
+    else
+      echo "Attempting to Query peer${PEER}.thinkright ...$(($(date +%s) - starttime)) secs"
+    fi
     set -x
     peer chaincode query -C $CHANNEL_NAME -n mycc -c '{"Args":["query","a"]}' >&log.txt
     res=$?
@@ -182,9 +199,17 @@ chaincodeQuery() {
   echo
   cat log.txt
   if test $rc -eq 0; then
-    echo "===================== Query successful on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
+    if [ $ORG -eq 1 ]; then
+      echo "===================== Query successful on peer${PEER}.100mb on channel '$CHANNEL_NAME' ===================== "
+    else
+      echo "===================== Query successful on peer${PEER}.thinkright on channel '$CHANNEL_NAME' ===================== "
+    fi
   else
-    echo "!!!!!!!!!!!!!!! Query result on peer${PEER}.org${ORG} is INVALID !!!!!!!!!!!!!!!!"
+    if [ $ORG -eq 1 ]; then
+      echo "!!!!!!!!!!!!!!! Query result on peer${PEER}.100mb is INVALID !!!!!!!!!!!!!!!!"
+    else
+      echo "!!!!!!!!!!!!!!! Query result on peer${PEER}.thinkright is INVALID !!!!!!!!!!!!!!!!"
+    fi
     echo "================== ERROR !!! FAILED to execute End-2-End Scenario =================="
     echo
     exit 1
