@@ -284,11 +284,19 @@ parsePeerConnectionParameters() {
   PEER_CONN_PARMS=""
   PEERS=""
   while [ "$#" -gt 0 ]; do
-    PEER="peer$1.org$2"
+    if [ $2 -eq 1 ]; then
+      PEER="peer$1.100mb"
+    else
+      PEER="peer$1.thinkright"
+    fi
     PEERS="$PEERS $PEER"
-    PEER_CONN_PARMS="$PEER_CONN_PARMS --peerAddresses $PEER.example.com:7051"
+    PEER_CONN_PARMS="$PEER_CONN_PARMS --peerAddresses $PEER.jet-network.com:7051"
     if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "true" ]; then
-      TLSINFO=$(eval echo "--tlsRootCertFiles \$PEER$1_ORG$2_CA")
+      if [ $2 -eq 1 ]; then
+        TLSINFO=$(eval echo "--tlsRootCertFiles \$PEER0_100MB_CA")
+      else
+        TLSINFO=$(eval echo "--tlsRootCertFiles \$PEER0_THINKRIGHT_CA")
+      fi
       PEER_CONN_PARMS="$PEER_CONN_PARMS $TLSINFO"
     fi
     # shift by two to get the next pair of peer/org parameters
