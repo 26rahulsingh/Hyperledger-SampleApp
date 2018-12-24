@@ -1,0 +1,95 @@
+{
+  "network-configs": {
+    "network-1": {
+      "version": "1.0",
+      "clients": {
+        "client-1": {
+          "tlsEnable": true,
+          "organization": "100MBMSP",
+          "channel": "mychannel",
+          "credentialStore": {
+            "path": "./tmp/credentialStore_Org1/credential",
+            "cryptoStore": {
+              "path": "./tmp/credentialStore_Org1/crypto"
+            }
+          }
+        }
+      },
+      "channels": {
+        "mychannel": {
+          "peers": {
+            "peer0.100mb.jet-network.com": {}
+          },
+          "connection": {
+            "timeout": {
+              "peer": {
+                "endorser": "6000",
+                "eventHub": "6000",
+                "eventReg": "6000"
+              }
+            }
+          }
+        }
+      },
+      "organizations": {
+        "100MBMSP": {
+          "mspid": "100MBMSP",
+          "fullpath": false,
+          "adminPrivateKey": {
+            "path":
+              "/home/rahul/work/extra/hyperledger/jet-hyperledger/network/crypto-config/peerOrganizations/100mb.jet-network.com/users/Admin@100mb.jet-network.com/msp/keystore"
+          },
+          "signedCert": {
+            "path":
+              "/home/rahul/work/extra/hyperledger/jet-hyperledger/network/crypto-config/peerOrganizations/100mb.jet-network.com/users/Admin@100mb.jet-network.com/msp/signcerts"
+          }
+        },
+        "ThinkRightMSP": {
+          "mspid": "ThinkRightMSP",
+          "adminPrivateKey": {
+            "path":
+              "/home/rahul/work/extra/hyperledger/jet-hyperledger/network/crypto-config/peerOrganizations/thinkright.jet-network.com/users/Admin@thinkright.jet-network.com/msp/keystore"
+          }
+        },
+        "OrdererMSP": {
+          "mspid": "OrdererMSP",
+          "adminPrivateKey": {
+            "path":
+              "/home/rahul/work/extra/hyperledger/jet-hyperledger/network/crypto-config/ordererOrganizations/jet-network.com/users/Admin@jet-network.com/msp/keystore"
+          }
+        }
+      },
+      "peers": {
+        "peer0.100mb.jet-network.com": {
+          "tlsCACerts": {
+            "path":
+              "/home/rahul/work/extra/hyperledger/jet-hyperledger/network/crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/tls/ca.crt"
+          },
+          "url": "grpcs://localhost:7051",
+          "eventUrl": "grpcs://localhost:7053",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer0.100mb.jet-network.com"
+          }
+        },
+        "peer1.100mb.jet-network.com": {
+          "url": "grpcs://localhost:8051"
+        },
+        "peer0.thinkright.jet-network.com": {
+          "url": "grpcs://localhost:9051"
+        },
+        "peer1.thinkright.jet-network.com": {
+          "url": "grpcs://localhost:10051"
+        }
+      },
+      "orderers": {
+        "orderer.jet-network.com": {
+          "url": "grpcs://localhost:7050"
+        }
+      }
+    },
+    "network-2": {}
+  },
+  "configtxgenToolPath":
+    "/home/rahul/work/extra/hyperledger/jet-hyperledger/network/bin",
+  "license": "Apache-2.0"
+}

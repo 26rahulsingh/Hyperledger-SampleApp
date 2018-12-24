@@ -1,0 +1,17 @@
+explorer_1/scripts/bower_components/
+explorer_1/webcontent
+
+node_modules
+
+.idea/*
+venv
+.vscode
+
+test/*
+tmp/*
+
+logs
+.log
+log.log
+
+examples/*

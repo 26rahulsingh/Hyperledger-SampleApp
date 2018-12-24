@@ -13,6 +13,9 @@ network/channel-artifacts/*.tx
 network/channel-artifacts/*.block
 network/crypto-config/*
 
+./**/.package-lock.json
+./**/node_modules/
+
 # node modules
 chaincode/node_modules/
 
