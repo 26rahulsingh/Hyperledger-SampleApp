@@ -11,6 +11,6 @@
   "sync": {
     "type": "local",
     "platform": "fabric",
-    "blocksSyncTime": "0.1"
+    "blocksSyncTime": "1"
   }
 }
