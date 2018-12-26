@@ -18,10 +18,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-100mb
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.100mb.jet-network.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/011d4a0b8ab9b2dbd8dad9a3402b9c2875581e68238222f8a89cbc36efcb9fe7_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e95caf6fe75e88ffcabab71d43fde78f594cd7a801d91f3676c6a0952b58820d_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.100mb.jet-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/011d4a0b8ab9b2dbd8dad9a3402b9c2875581e68238222f8a89cbc36efcb9fe7_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.100mb.jet-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/e95caf6fe75e88ffcabab71d43fde78f594cd7a801d91f3676c6a0952b58820d_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/100mb.jet-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_100MB
@@ -35,10 +35,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-thinkright
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.thinkright.jet-network.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/7c48ae1fc0d5db2e2e7d81ba5819b717dccd38542f1df129cc6c444417f681c9_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/07247530785f658f8311394b5a4d0d6c4138e5c15631f2c3c94c7c5f0e444a44_sk
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.thinkright.jet-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/7c48ae1fc0d5db2e2e7d81ba5819b717dccd38542f1df129cc6c444417f681c9_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.thinkright.jet-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/07247530785f658f8311394b5a4d0d6c4138e5c15631f2c3c94c7c5f0e444a44_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/thinkright.jet-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_ThinkRight
