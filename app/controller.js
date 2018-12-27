@@ -17,6 +17,9 @@ var path          = require('path');
 var util          = require('util');
 var os            = require('os');
 
+var clientCert = fs.readFileSync(path.join(__dirname, '../network/crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/msp/tlscacerts/tlsca.100mb.jet-network.com-cert.pem'));
+var ordererCert = fs.readFileSync(path.join(__dirname, '../network/crypto-config/ordererOrganizations/jet-network.com/orderers/orderer.jet-network.com/msp/tlscacerts/tlsca.jet-network.com-cert.pem'));
+
 module.exports = (function() {
 return{
 	get_all_tuna: function(req, res){
@@ -26,7 +29,12 @@ return{
 
 		// setup the fabric network
 		var channel = fabric_client.newChannel('mychannel');
-		var peer = fabric_client.newPeer('grpc://localhost:7051');
+		const options = {
+			'pem': Buffer.from(clientCert).toString(),
+			'ssl-target-name-override': 'peer0.100mb.jet-network.com',
+			'grpc.keepalive_timeout_ms': 10000
+		};
+		var peer = fabric_client.newPeer('grpcs://localhost:7051', options);
 		channel.addPeer(peer);
 
 		//
@@ -101,9 +109,19 @@ return{
 
 		// setup the fabric network
 		var channel = fabric_client.newChannel('mychannel');
-		var peer = fabric_client.newPeer('grpc://localhost:7051');
+		const options = {
+			'pem': Buffer.from(clientCert).toString(),
+			'ssl-target-name-override': 'peer0.100mb.jet-network.com',
+			'grpc.keepalive_timeout_ms': 10000
+		};
+		var peer = fabric_client.newPeer('grpcs://localhost:7051', options);
 		channel.addPeer(peer);
-		var order = fabric_client.newOrderer('grpc://localhost:7050')
+		const ordererOptions = {
+			'pem': Buffer.from(ordererCert).toString(),
+			'ssl-target-name-override': 'orderer.jet-network.com',
+			'grpc.keepalive_timeout_ms': 10000
+		};
+		var order = fabric_client.newOrderer('grpcs://localhost:7050', ordererOptions);
 		channel.addOrderer(order);
 
 		var member_user = null;
@@ -250,7 +268,12 @@ return{
 
 		// setup the fabric network
 		var channel = fabric_client.newChannel('mychannel');
-		var peer = fabric_client.newPeer('grpc://localhost:7051');
+		const options = {
+			'pem': Buffer.from(clientCert).toString(),
+			'ssl-target-name-override': 'peer0.100mb.jet-network.com',
+			'grpc.keepalive_timeout_ms': 10000
+		};
+		var peer = fabric_client.newPeer('grpcs://localhost:7051', options);
 		channel.addPeer(peer);
 
 		//
@@ -323,9 +346,19 @@ return{
 
 		// setup the fabric network
 		var channel = fabric_client.newChannel('mychannel');
-		var peer = fabric_client.newPeer('grpc://localhost:7051');
+		const options = {
+			'pem': Buffer.from(clientCert).toString(),
+			'ssl-target-name-override': 'peer0.100mb.jet-network.com',
+			'grpc.keepalive_timeout_ms': 10000
+		};
+		var peer = fabric_client.newPeer('grpcs://localhost:7051', options);
 		channel.addPeer(peer);
-		var order = fabric_client.newOrderer('grpc://localhost:7050')
+		const ordererOptions = {
+			'pem': Buffer.from(ordererCert).toString(),
+			'ssl-target-name-override': 'orderer.jet-network.com',
+			'grpc.keepalive_timeout_ms': 10000
+		};
+		var order = fabric_client.newOrderer('grpcs://localhost:7050', ordererOptions)
 		channel.addOrderer(order);
 
 		var member_user = null;
