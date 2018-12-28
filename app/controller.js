@@ -18,7 +18,7 @@ var util          = require('util');
 var os            = require('os');
 
 var clientCert = fs.readFileSync(path.join(__dirname, '../network/crypto-config/peerOrganizations/100mb.jet-network.com/peers/peer0.100mb.jet-network.com/msp/tlscacerts/tlsca.100mb.jet-network.com-cert.pem'));
-var ordererCert = fs.readFileSync(path.join(__dirname, '../network/crypto-config/ordererOrganizations/jet-network.com/orderers/orderer.jet-network.com/msp/tlscacerts/tlsca.jet-network.com-cert.pem'));
+var serverCert = fs.readFileSync(path.join(__dirname, '../network/crypto-config/ordererOrganizations/jet-network.com/orderers/orderer.jet-network.com/msp/tlscacerts/tlsca.jet-network.com-cert.pem'));
 
 module.exports = (function() {
 return{
@@ -117,7 +117,7 @@ return{
 		var peer = fabric_client.newPeer('grpcs://localhost:7051', options);
 		channel.addPeer(peer);
 		const ordererOptions = {
-			'pem': Buffer.from(ordererCert).toString(),
+			'pem': Buffer.from(serverCert).toString(),
 			'ssl-target-name-override': 'orderer.jet-network.com',
 			'grpc.keepalive_timeout_ms': 10000
 		};
@@ -354,7 +354,7 @@ return{
 		var peer = fabric_client.newPeer('grpcs://localhost:7051', options);
 		channel.addPeer(peer);
 		const ordererOptions = {
-			'pem': Buffer.from(ordererCert).toString(),
+			'pem': Buffer.from(serverCert).toString(),
 			'ssl-target-name-override': 'orderer.jet-network.com',
 			'grpc.keepalive_timeout_ms': 10000
 		};
